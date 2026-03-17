@@ -26,12 +26,13 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/register", "/login").permitAll() // Allow access to registration and login pages
-                        .requestMatchers("/greet").authenticated() // Secure the /greet endpoint
-                        .anyRequest().permitAll() // Allow access to all other endpoints
+                        .requestMatchers("/admin").hasRole("ADMIN") // /admin rute only for ADMIN ROLES
+                        .requestMatchers("/viewer").hasRole("VIEWER") // /viewer rute only for VIEWER ROLES
+                        .anyRequest().authenticated() // All other requests require authentication
                 )
                 .formLogin(form -> form
                         .loginPage("/login") // Custom login page
-                        .defaultSuccessUrl("/greet", true) // Redirect to /greet after successful login
+                        .defaultSuccessUrl("/home", true) // Redirect to /home after successful login
                         .permitAll()
                 )
                 .logout(logout -> logout
